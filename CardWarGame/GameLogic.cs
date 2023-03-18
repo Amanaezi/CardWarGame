@@ -15,7 +15,17 @@ namespace CardWarGame
 
         private CardSet TableDeck = new CardSet();
 
+        public GameLogic(List<Player> players)
+        {
+            this.players = players;
+            Deck = new();
+            Deck.Full();
+            Deck.CutTo(36);
+        }
+
         public Player Current { get; set; }
+
+        public Player Human { get; set; }
 
         public CardSet Deck { get; set; } = new CardSet();
 
@@ -23,84 +33,107 @@ namespace CardWarGame
         {
             Deck.Shuffle();
 
-            for(int i = 0; i < 4; i++)
+            for(int i = 0; i < players.Count; i++)
             {
-                players[i].Hand.Add(Deck.Deal(9));
+                players[i].Hand.Add(Deck.Deal(Deck.Count / players.Count));
             }
             
 
-            Current = players[0];
+            Current = Human = players[0];
         }
 
         public void PickCard(Card card)
         {
-            TableDeck.Add(card);
-            Current.Hand.Remove(card);
+            if (!Current.Hand.Contains(card)) return;
+            TableDeck.Add(Current.Hand.Pull(card));
+            // CompTurn()
             NextPlayerMove();
         }
 
-        public void PickCard(int n)
+        //public void PickCard(int n)
+        //{
+        //    TableDeck.Add(Current.Hand[n]);
+        //    Current.Hand.Remove(n);
+        //    NextPlayerMove();
+        //}
+
+        //private void NextPlayerMove()
+        //{
+        //    int newCurrPlayer = 0;
+        //    for (int i = 0; i < 3; i++)
+        //    {
+        //        if (Current == players[i])
+        //        {
+        //            newCurrPlayer = i + 1;
+        //        }
+        //        else
+        //        {
+        //            newCurrPlayer = 0;
+        //        }
+        //    }
+        //    Current = players[newCurrPlayer];
+        //    if(newCurrPlayer != 0 || newCurrPlayer != 3)
+        //    {
+        //        PickCard(random.Next(Current.Hand.Count));
+        //    }
+        //    else if(newCurrPlayer == 3)
+        //    {
+        //        PickCard(random.Next(Current.Hand.Count));
+        //        MoveResult(TableDeck);
+        //    }
+        //    else
+        //    {
+        //        return;
+        //    }
+
+
+        //}
+
+        public void CompTurn()
         {
-            TableDeck.Add(Current.Hand[n]);
-            Current.Hand.Remove(n);
-            NextPlayerMove();
+            for (int i = 1; i < players.Count; i++)
+            {
+                players[i].Hand.Shuffle();
+                TableDeck.Add(players[i].Hand.Pull(0));
+            }
+            MoveResult();
         }
 
-        private void NextPlayerMove()
+
+        private bool MoveResult()
         {
-            int newCurrPlayer = 0;
-            for (int i = 0; i < 3; i++)
+            //CardSet cards = TableDeck;
+            //int MaxCard = (int)cards[0].Rank;
+
+            //for(int i = 1; i <= cards.Count; i++)
+            //{
+            //    if (MaxCard < (int)cards[i].Rank)
+            //    {
+            //        players[i].Hand.Add(cards.Deal(cards.Count));
+            //    }
+            //    else if(//проверка наличия равных карт, при совпадении, нужно делать спор между игроками, чьи карты совпали)
+            //    {
+            //        int winner = Dispute();
+            //        players[winner].Hand.Add(cards);
+            //        cards.Clear();
+            //    }
+            //    else
+            //    {
+            //        players[0].Hand.Add(cards.Deal(cards.Count));
+            //    }
+            //}
+
+            //NextPlayerMove();
+            if(IsDispute())
             {
-                if (Current == players[i])
-                {
-                    newCurrPlayer = i + 1;
-                }
-                else
-                {
-                    newCurrPlayer = 0;
-                }
-            }
-            Current = players[newCurrPlayer];
-            if(newCurrPlayer != 0 || newCurrPlayer != 3)
-            {
-                PickCard(random.Next(Current.Hand.Count));
-            }
-            else if(newCurrPlayer == 3)
-            {
-                PickCard(random.Next(Current.Hand.Count));
-                MoveResult(TableDeck);
-            }
-            else
-            {
-                return;
+                //режим спору
             }
         }
 
-        private void MoveResult(CardSet cards)
+        private bool IsDispute()
         {
-            int MaxCard = (int)cards[0].Rank;
-            for(int i = 1; i <= 3; i++)
-            {
-                if (MaxCard < (int)cards[i].Rank)
-                {
-                    players[i].Hand.Add(cards);
-                    cards.Clear();
-                }
-                else if(//проверка наличия равных карт, при совпадении, нужно делать спор между игроками, чьи карты совпали)
-                {
-                    int winner = Dispute();
-                    players[winner].Hand.Add(cards);
-                    cards.Clear();
-                }
-                else
-                {
-                    players[0].Hand.Add(cards);
-                    cards.Clear();
-                }
-            }
-
-            NextPlayerMove();
-
+            //Чи потрібен спір
+            throw new Exception();
         }
 
         private int Dispute()

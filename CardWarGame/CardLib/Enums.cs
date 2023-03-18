@@ -8,7 +8,11 @@ namespace CardLib
 {
     public enum CardRank
     {
-        Six = 6,
+        Two = 2,
+        Three,
+        Four,
+        Five,
+        Six,
         Seven,
         Eight,
         Nine,
