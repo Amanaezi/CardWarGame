@@ -29,6 +29,8 @@ namespace CardWarGame
 
         public CardSet Deck { get; set; } = new CardSet();
 
+        public int winner;
+
         public void Start()
         {
             Deck.Shuffle();
@@ -46,18 +48,17 @@ namespace CardWarGame
         {
             if (!Current.Hand.Contains(card)) return;
             TableDeck.Add(Current.Hand.Pull(card));
-            // CompTurn()
-            NextPlayerMove();
+            CompTurn();
+            //NextPlayerMove();
         }
 
         //public void PickCard(int n)
         //{
-        //    TableDeck.Add(Current.Hand[n]);
-        //    Current.Hand.Remove(n);
+        //    TableDeck.Add(Current.Hand.Pull(n));
         //    NextPlayerMove();
         //}
 
-        //private void NextPlayerMove()
+        //private void NextPlayerMove();
         //{
         //    int newCurrPlayer = 0;
         //    for (int i = 0; i < 3; i++)
@@ -100,68 +101,67 @@ namespace CardWarGame
         }
 
 
-        private bool MoveResult()
+        private void MoveResult()
         {
-            //CardSet cards = TableDeck;
-            //int MaxCard = (int)cards[0].Rank;
+            CardSet cards = TableDeck;
+            int MaxCard = (int)cards[0].Rank;
+            winner = 0;
 
-            //for(int i = 1; i <= cards.Count; i++)
-            //{
-            //    if (MaxCard < (int)cards[i].Rank)
-            //    {
-            //        players[i].Hand.Add(cards.Deal(cards.Count));
-            //    }
-            //    else if(//проверка наличия равных карт, при совпадении, нужно делать спор между игроками, чьи карты совпали)
-            //    {
-            //        int winner = Dispute();
-            //        players[winner].Hand.Add(cards);
-            //        cards.Clear();
-            //    }
-            //    else
-            //    {
-            //        players[0].Hand.Add(cards.Deal(cards.Count));
-            //    }
-            //}
-
-            //NextPlayerMove();
-            if(IsDispute())
+            for (int i = 1; i <= cards.Count; i++)
             {
-                //режим спору
+                if (MaxCard < (int)cards[i].Rank)
+                {
+                    MaxCard = (int)cards[i].Rank;
+                    winner = i;
+                }
             }
+
+            bool firsttime = true;
+            bool IsDispute = false;
+
+            int[] disputeplayers = new int[players.Count];
+            int j = 0;
+                
+                for (int i = 0; i <= cards.Count; i++)
+                {
+                    if(MaxCard == (int)cards[i].Rank)
+                    {
+                        if (cards[winner] != cards[i])
+                        {
+                            IsDispute = true;
+
+                            if (firsttime)
+                            {
+                                disputeplayers[j] = winner;
+                                firsttime = false;
+                            }
+                            j++;
+                            disputeplayers[j] = i;
+                        }
+                    }
+                }
+
+            if(IsDispute)
+            {
+                TableDeck.Clear();
+                Dispute(disputeplayers);
+            }
+            
+            players[winner].Hand.Add(cards.Deal(cards.Count));
         }
 
-        private bool IsDispute()
-        {
-            //Чи потрібен спір
-            throw new Exception();
-        }
-
-        private int Dispute()
-        {
-            /*
-             * по правилам игры нужно с колоды вытянуть одну карту рубашкой вверх, вторая идет на войну, 
-             игроки в споре делают тоже самое, в случае совпадения сделать еще один спор и так по кругу,
-            в случае недостачи карт, игрок забирает все карты на войне.
-            Второй вариант, чтобы облегчить жизнь просто первую вытянутую карту не скрывать, но она в бое не считаеться
-            Третий вариант, первая же вытянутая карта играеться в споре
-            */
-
-            return 0;
+        private void Dispute(int[] disputeplayers)
+        { 
+            for(int i = 0; i <= disputeplayers.Count(); i++)
+            {
+                TableDeck.Add(players[disputeplayers[i]].Hand.Pull(0));
+            }
+            MoveResult();
         }
 
         private string GameResult()
         {
-            for(int i = 0; i < 4; i++)
-            {
-                if (Current == players[i])
-                {
-                    return $"Player {i} Win!";
-                }
-                else
-                {
-                    return " ";
-                }
-            }
+            throw new Exception();
         }
     }
 }
