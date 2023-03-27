@@ -17,6 +17,7 @@ namespace CardWarGame
             Hand = hand;
         }
 
+        public Card Last { get; set; }
         public string Name { get; set; }
         public CardSet Hand { get; set; }
     }
