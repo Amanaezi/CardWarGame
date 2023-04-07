@@ -9,32 +9,25 @@ namespace CardWarGame
 {
     class GameLogic
     {
-        private List<Player> players = new();
+        public List<Player> players = new();
 
-        private readonly Random random = new();
+        public CardSet TableDeck = new CardSet();
 
-        private CardSet TableDeck = new CardSet();
-
-        private List<Player> DisputePlayers = new();
-
-        public GameLogic(List<Player> players, Action showState)
+        public GameLogic(List<Player> players, Action showState, Action<string> showInfo)
         {
             this.players = players;
             Deck = new();
             Deck.Full();
             Deck.CutTo(36);
             ShowState = showState;
+            ShowInfo = showInfo;
         }
 
-        public Action ShowState { get; set; } 
-
-        public Player Current { get; set; }
-
+        public Action ShowState { get; set; }
+        public Action<string> ShowInfo { get; set; }
         public Player Human { get; set; }
 
         public CardSet Deck { get; set; } = new CardSet();
-
-        private Card FirstCard = null;
 
         public int winner;
 
@@ -50,28 +43,25 @@ namespace CardWarGame
             }
             
 
-            Current = Human = players[0];
+            Human = players[0];
         }
 
-        public void PickCard(Card card)
+        public void Turn(Card card)
         {
-            if (!Current.Hand.Contains(card)) return;
-            if (IsDispute)
-            {
-                if (FirstCard == null)
-                {
-                    FirstCard = card;
-                    TableDeck.Add(Current.Hand.Pull(card));
-                    Human.Last = TableDeck.Last();
-                    return;
-                }
-                FirstCard = null;
-            }
+            PickCard(card, Human);
+        }
 
-            TableDeck.Add(Current.Hand.Pull(card));
-            Human.Last = TableDeck.Last();
-            CompTurn();
-            //NextPlayerMove();
+        private void PickCard(Card card, Player player)
+        {
+            if (!player.Hand.Contains(card)) return;
+
+            card.Closed = IsDispute && !player.Firstcard;
+            player.Firstcard = !card.Closed; 
+
+            TableDeck.Add(player.Hand.Pull(card));
+            player.Last = card;
+            AfterTurn(player);
+            ShowState();
         }
 
         //public void PickCard(int n)
@@ -112,25 +102,32 @@ namespace CardWarGame
 
         //}
 
-        public void CompTurn()
+        public void AfterTurn(Player player)
         {
-            if (!IsDispute)
+            //player.IsInRound = player.Hand.Count > 0;
+            
+            if (player != Human) return;
+
+            for (int i = 1; i < players.Count; i++)
             {
-                for (int i = 1; i < players.Count; i++)
-                {
+                if (!players[i].IsInRound) continue;
                     players[i].Hand.Shuffle();
-                    TableDeck.Add(players[i].Hand.Pull());
-                }
+                    PickCard(players[i].Hand.LastCard, players[i]);
+            }
+
+            if(!player.Last.Closed)
+            {
                 MoveResult();
             }
-            else
-            {
+            
+
+
                 /*foreach (int i = 0; i < DisputePlayers.Count; i++)
                 {
                     DisputePlayers[i].Hand.Shuffle();
                     TableDeck.Add(DisputePlayers[i].Hand.Pull());
                     TableDeck.Add(DisputePlayers[i].Hand.Pull());
-                }*/
+                }
 
                 foreach (var player in DisputePlayers)
                 {
@@ -139,133 +136,90 @@ namespace CardWarGame
                     TableDeck.Add(player.Hand.Pull());
                     player.Last = TableDeck.Last();
                 }
-                MoveResult();
-            }
+                MoveResult();*/
+            
         }
 
 
         private void MoveResult()
         {
-            if (IsDispute)
+            List<Player> PlayersWithMaxCard = MaxPlayers();
+
+            if (PlayersWithMaxCard.Count == 1)
             {
-                Card[] cards = new Card[DisputePlayers.Count];
+                TakeCards(PlayersWithMaxCard[0]);
+                return;
+            }
 
-                for (int i = 0; i <= DisputePlayers.Count; i++)
+            IsDispute = true;
+
+            foreach (var player in players.Where(p => p.IsInRound))
+            {
+                player.IsInRound = PlayersWithMaxCard.Contains(player);
+            }
+
+            ShowState();
+
+            if (!PlayersWithMaxCard.Contains(Human))
+            {
+                foreach (var player in PlayersWithMaxCard)
                 {
-                    cards[i] = players[i].Last;
-                }
-
-                CardSet cards2 = new CardSet();
-                cards2.Add(cards);
-                int MaxCard = (int)cards[0].Rank;
-                winner = 0;
-
-                for (int i = 1; i <= DisputePlayers.Count; i++)
-                {
-                    if (MaxCard < (int)cards[i].Rank)
+                    player.Hand.Shuffle();
+                    PickCard(player.Hand.LastCard, player);
+                    if(player.Hand.Count > 0)
                     {
-                        MaxCard = (int)cards[i].Rank;
-                        winner = i;
+                        PickCard(player.Hand.LastCard, player);
+                    }
+                    else
+                    {
+                        player.IsInRound = false;
                     }
                 }
+            }
+        }
+        private void TakeCards(Player roundWinner)
+        {
+            roundWinner.Hand.Add(TableDeck.Deal(TableDeck.Count));
 
-                bool firsttime = true;
+            foreach(var player in players)
+            {
+                player.IsInRound = player.Hand.Count > 0;
+            }
 
-                int[] disputeplayers = new int[players.Count];
-                int j = 0;
+            if(players.Count(p => p.IsInRound) == 1)
+            {
+                Player winner = players.FirstOrDefault(p => p.IsInRound);
+                ShowInfo(winner.Name + "win!");
+            }
+        }
 
-                for (int i = 0; i < cards.Count(); i++)
-                {
-                    if (MaxCard == (int)cards[i].Rank)
-                    {
-                        if (cards[winner] != cards[i])
-                        {
-                            IsDispute = true;
+        private List<Player> MaxPlayers()
+        {
+            Card MaxCard = null;
+            List<Player> maxPlayers = new List<Player>();
 
-                            if (firsttime)
-                            {
-                                disputeplayers[j] = winner;
-                                firsttime = false;
-                            }
-                            j++;
-                            disputeplayers[j] = i;
-                        }
-                    }
-                }
-
-                if (IsDispute)
-                {
-                    CardSet cards1 = TableDeck;
-                    Dispute(disputeplayers);
-                    players[winner].Hand.Add(cards1.Deal(cards1.Count));
-                }
+            foreach (var player in players)
+            {
+                if (!player.IsInRound) continue;
 
                 
-                players[winner].Hand.Add(cards2.Deal(cards2.Count));
+                if (MaxCard == null || player.Last.Rank > MaxCard.Rank)
+                {
+                    MaxCard = player.Last;
+                }
             }
-            else
+
+            foreach (var player in players)
             {
-                CardSet cards = TableDeck;
-                int MaxCard = (int)cards[0].Rank;
-                winner = 0;
+                if (!player.IsInRound) continue;
 
-                for (int i = 1; i <= cards.Count; i++)
+                if(player.Last.Rank == MaxCard.Rank)
                 {
-                    if (MaxCard < (int)cards[i].Rank)
-                    {
-                        MaxCard = (int)cards[i].Rank;
-                        winner = i;
-                    }
+                    maxPlayers.Add(player); 
                 }
-
-                bool firsttime = true;
-
-                int[] disputeplayers = new int[players.Count];
-                int j = 0;
-
-                for (int i = 0; i < cards.Count; i++)
-                {
-                    if (MaxCard == (int)cards[i].Rank)
-                    {
-                        if (cards[winner] != cards[i])
-                        {
-                            IsDispute = true;
-
-                            if (firsttime)
-                            {
-                                disputeplayers[j] = winner;
-                                firsttime = false;
-                            }
-                            j++;
-                            disputeplayers[j] = i;
-                        }
-                    }
-                }
-
-                if (IsDispute)
-                {
-                    CardSet cards1 = TableDeck;
-                    Dispute(disputeplayers);
-                    players[winner].Hand.Add(cards1.Deal(cards1.Count));
-                }
-
-                players[winner].Hand.Add(cards.Deal(cards.Count));
             }
-        }
 
-        private void Dispute(int[] disputeplayers)
-        {
-            TableDeck.RemoveRange(0, TableDeck.Count);
-            for (int i = 0; i <= disputeplayers.Count(); i++)
-            {
-                TableDeck.Add(players[disputeplayers[i]].Hand.Pull(0));
-            }
-            MoveResult();
-        }
-
-        private string GameResult()
-        {
-            throw new Exception();
+            return maxPlayers;
         }
     }
 }

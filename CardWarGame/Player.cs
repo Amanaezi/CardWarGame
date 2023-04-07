@@ -17,6 +17,8 @@ namespace CardWarGame
             Hand = hand;
         }
 
+        public bool IsInRound { get; set; } = true;
+        public bool Firstcard { get; set; } = false;
         public Card Last { get; set; }
         public string Name { get; set; }
         public CardSet Hand { get; set; }

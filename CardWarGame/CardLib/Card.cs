@@ -30,6 +30,7 @@ namespace CardLib
             Suit = suit;
         }
 
+        public bool Closed { get; set; } = false;
         public CardRank Rank { get; set; }
         public CardSuit Suit { get; set; }
 
