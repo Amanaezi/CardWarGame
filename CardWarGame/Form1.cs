@@ -16,19 +16,18 @@ namespace CardWarGame
     {
         GameLogic game;
         List<GraphicsCardSet> sets = new();
-        Player[] Players = new Player[4];
-        List<Player> players1 = new();
+        List<Player> players = new();
         GraphicsStore store;
         GraphicsCardSet table;
         Card activeCard;
         public Form1()
         {
             InitializeComponent();
-            for(int i = 0; i <= 3; i++)
+            for(int i = 0; i < 4; i++)
             {
-                players1.Add(Players[i]);
+                players.Add(new Player($"Noname {i}"));
             }
-            game = new GameLogic(players1, showState, showInfo);
+            game = new GameLogic(players, showState, showInfo);
             store = new(game.Deck, this);
 
 
@@ -102,7 +101,7 @@ namespace CardWarGame
         {
             foreach (var set in sets)
             {
-                set.Draw(game.Deck != set.CardSet);
+                set.Draw(game.TableDeck == set.CardSet);
             }
         }
 

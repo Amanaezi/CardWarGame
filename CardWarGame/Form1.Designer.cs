@@ -72,7 +72,7 @@ namespace CardWarGame
             // 
             this.pTable.Location = new System.Drawing.Point(138, 192);
             this.pTable.Name = "pTable";
-            this.pTable.Size = new System.Drawing.Size(542, 531);
+            this.pTable.Size = new System.Drawing.Size(679, 531);
             this.pTable.TabIndex = 6;
             // 
             // pDeck
@@ -84,9 +84,10 @@ namespace CardWarGame
             // 
             // pActive
             // 
-            this.pActive.Location = new System.Drawing.Point(686, 637);
+            this.pActive.Location = new System.Drawing.Point(12, 164);
             this.pActive.Name = "pActive";
             this.pActive.Size = new System.Drawing.Size(62, 85);
+            this.pActive.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pActive.TabIndex = 8;
             this.pActive.TabStop = false;
             // 

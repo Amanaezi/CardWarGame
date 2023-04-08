@@ -44,6 +44,7 @@ namespace CardWarGame
             
 
             Human = players[0];
+            ShowState();
         }
 
         public void Turn(Card card)
@@ -119,25 +120,6 @@ namespace CardWarGame
             {
                 MoveResult();
             }
-            
-
-
-                /*foreach (int i = 0; i < DisputePlayers.Count; i++)
-                {
-                    DisputePlayers[i].Hand.Shuffle();
-                    TableDeck.Add(DisputePlayers[i].Hand.Pull());
-                    TableDeck.Add(DisputePlayers[i].Hand.Pull());
-                }
-
-                foreach (var player in DisputePlayers)
-                {
-                    if (player == Human) continue;
-                    TableDeck.Add(player.Hand.Pull());
-                    TableDeck.Add(player.Hand.Pull());
-                    player.Last = TableDeck.Last();
-                }
-                MoveResult();*/
-            
         }
 
 
