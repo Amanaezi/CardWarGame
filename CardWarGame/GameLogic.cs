@@ -36,10 +36,10 @@ namespace CardWarGame
         public void Start()
         {
             Deck.Shuffle();
-
+            int count = Deck.Count;
             for(int i = 0; i < players.Count; i++)
             {
-                players[i].Hand.Add(Deck.Deal(Deck.Count / players.Count));
+                players[i].Hand.Add(Deck.Deal(count / players.Count));
             }
             
 
