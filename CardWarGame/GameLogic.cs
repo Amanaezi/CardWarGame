@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CardWarGame
 {
@@ -13,7 +14,7 @@ namespace CardWarGame
 
         public CardSet TableDeck = new CardSet();
 
-        public GameLogic(List<Player> players, Action showState, Action<string> showInfo)
+        public GameLogic(List<Player> players, Action showState, Action showInfo)
         {
             this.players = players;
             Deck = new();
@@ -24,12 +25,10 @@ namespace CardWarGame
         }
 
         public Action ShowState { get; set; }
-        public Action<string> ShowInfo { get; set; }
+        public Action ShowInfo { get; set; }
         public Player Human { get; set; }
-
+        public Player Winner { get; set; }
         public CardSet Deck { get; set; } = new CardSet();
-
-        public int winner;
 
         private bool IsDispute = false;
 
@@ -105,7 +104,7 @@ namespace CardWarGame
 
         public void AfterTurn(Player player)
         {
-            //player.IsInRound = player.Hand.Count > 0;
+            player.IsInRound = player.Hand.Count > 0;
             
             if (player != Human) return;
 
@@ -170,8 +169,8 @@ namespace CardWarGame
 
             if(players.Count(p => p.IsInRound) == 1)
             {
-                Player winner = players.FirstOrDefault(p => p.IsInRound);
-                ShowInfo(winner.Name + "win!");
+                Winner = players.FirstOrDefault(p => p.IsInRound);
+                ShowInfo();
             }
         }
 

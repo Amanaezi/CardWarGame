@@ -23,9 +23,10 @@ namespace CardWarGame
         public Form1()
         {
             InitializeComponent();
-            for(int i = 0; i < 4; i++)
+            players.Add(new Player("Artem "));
+            for (int i = 1; i < 4; i++)
             {
-                players.Add(new Player($"Noname {i}"));
+                players.Add(new Player($"Noname{i} "));
             }
             game = new GameLogic(players, showState, showInfo);
             store = new(game.Deck, this);
@@ -44,7 +45,10 @@ namespace CardWarGame
             Update();
         }
 
-        
+        private void showInfo()
+        {
+            MessageBox.Show(game.Winner.Name + "win!");
+        }
 
         private void BindEvents()
         {
