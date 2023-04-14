@@ -108,10 +108,5 @@ namespace CardWarGame
                 set.Draw(game.TableDeck == set.CardSet);
             }
         }
-
-        private void showInfo(string obj)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
