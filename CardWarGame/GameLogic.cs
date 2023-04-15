@@ -14,7 +14,7 @@ namespace CardWarGame
 
         public CardSet TableDeck = new CardSet();
 
-        public GameLogic(List<Player> players, Action showState, Action showInfo)
+        public GameLogic(List<Player> players, Action showState, Action<string> showInfo)
         {
             this.players = players;
             Deck = new();
@@ -25,7 +25,7 @@ namespace CardWarGame
         }
 
         public Action ShowState { get; set; }
-        public Action ShowInfo { get; set; }
+        public Action<string> ShowInfo { get; set; }
         public Player Human { get; set; }
         public Player Winner { get; set; }
         public CardSet Deck { get; set; } = new CardSet();
@@ -170,7 +170,7 @@ namespace CardWarGame
             if(players.Count(p => p.IsInRound) == 1)
             {
                 Winner = players.FirstOrDefault(p => p.IsInRound);
-                ShowInfo();
+                ShowInfo(Winner.Name + "win!");
             }
         }
 

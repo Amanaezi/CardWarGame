@@ -28,7 +28,7 @@ namespace CardWarGame
             {
                 players.Add(new Player($"Noname{i} "));
             }
-            game = new GameLogic(players, showState, showInfo);
+            game = new GameLogic(players, showState, ShowInfo);
             store = new(game.Deck, this);
 
 
@@ -45,9 +45,9 @@ namespace CardWarGame
             Update();
         }
 
-        private void showInfo()
+        private void ShowInfo(string message)
         {
-            MessageBox.Show(game.Winner.Name + "win!");
+            MessageBox.Show(message);
         }
 
         private void BindEvents()
