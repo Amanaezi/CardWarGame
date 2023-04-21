@@ -29,8 +29,11 @@ namespace CardWarGame
         public Player Human { get; set; }
         public Player Winner { get; set; }
         public CardSet Deck { get; set; } = new CardSet();
+        public bool MoveResultEnabled { get; private set; }
 
         private bool IsDispute = false;
+
+        private int disputeCards = 0;
 
         public void Start()
         {
@@ -44,10 +47,21 @@ namespace CardWarGame
 
             Human = players[0];
             ShowState();
+            ShowInfo("put the card on the table");
         }
 
         public void Turn(Card card)
         {
+            if (MoveResultEnabled) return;
+            if(IsDispute)
+            {
+                if (disputeCards == 2) return;
+                disputeCards++;
+            }
+            else
+            {
+                disputeCards = 0;
+            }
             PickCard(card, Human);
         }
 
@@ -114,33 +128,38 @@ namespace CardWarGame
                     players[i].Hand.Shuffle();
                     PickCard(players[i].Hand.LastCard, players[i]);
             }
-
-            if(!player.Last.Closed)
-            {
-                MoveResult();
-            }
+            
+            ShowState();
+            MoveResultEnabled = !player.Last.Closed;
+            
         }
 
 
-        private void MoveResult()
+        public void MoveResult()
         {
             List<Player> PlayersWithMaxCard = MaxPlayers();
 
             if (PlayersWithMaxCard.Count == 1)
             {
                 TakeCards(PlayersWithMaxCard[0]);
+                MoveResultEnabled = false;
+                ShowState();
                 return;
             }
 
             IsDispute = true;
+            string str = "";
 
             foreach (var player in players.Where(p => p.IsInRound))
             {
                 player.IsInRound = PlayersWithMaxCard.Contains(player);
             }
 
-            ShowState();
-
+            for(int i = 0; i < PlayersWithMaxCard.Count; i++)
+            {
+                str += $"{PlayersWithMaxCard[i].Name}, ";
+            }
+            ShowInfo($"{str} in dispute");
             if (!PlayersWithMaxCard.Contains(Human))
             {
                 foreach (var player in PlayersWithMaxCard)
@@ -157,6 +176,8 @@ namespace CardWarGame
                     }
                 }
             }
+            MoveResultEnabled = false;
+            ShowState();
         }
         private void TakeCards(Player roundWinner)
         {
@@ -166,7 +187,7 @@ namespace CardWarGame
             {
                 player.IsInRound = player.Hand.Count > 0;
             }
-
+            ShowInfo($"{roundWinner.Name} won the battle, put the card on the table");
             if(players.Count(p => p.IsInRound) == 1)
             {
                 Winner = players.FirstOrDefault(p => p.IsInRound);

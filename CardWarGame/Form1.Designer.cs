@@ -37,6 +37,12 @@ namespace CardWarGame
             this.pTable = new System.Windows.Forms.Panel();
             this.pDeck = new System.Windows.Forms.Panel();
             this.pActive = new System.Windows.Forms.PictureBox();
+            this.btnResult = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lbl1pl = new System.Windows.Forms.Label();
+            this.lblPl = new System.Windows.Forms.Label();
+            this.lbl2pl = new System.Windows.Forms.Label();
+            this.lbl3pl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pActive)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,9 +76,9 @@ namespace CardWarGame
             // 
             // pTable
             // 
-            this.pTable.Location = new System.Drawing.Point(138, 192);
+            this.pTable.Location = new System.Drawing.Point(413, 192);
             this.pTable.Name = "pTable";
-            this.pTable.Size = new System.Drawing.Size(679, 531);
+            this.pTable.Size = new System.Drawing.Size(1623, 531);
             this.pTable.TabIndex = 6;
             // 
             // pDeck
@@ -91,12 +97,73 @@ namespace CardWarGame
             this.pActive.TabIndex = 8;
             this.pActive.TabStop = false;
             // 
+            // btnResult
+            // 
+            this.btnResult.Location = new System.Drawing.Point(22, 396);
+            this.btnResult.Name = "btnResult";
+            this.btnResult.Size = new System.Drawing.Size(95, 85);
+            this.btnResult.TabIndex = 9;
+            this.btnResult.Text = "MoveResult";
+            this.btnResult.UseVisualStyleBackColor = true;
+            this.btnResult.Click += new System.EventHandler(this.btnResult_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 550);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.TabIndex = 10;
+            this.label1.Text = "label1";
+            // 
+            // lbl1pl
+            // 
+            this.lbl1pl.AutoSize = true;
+            this.lbl1pl.Location = new System.Drawing.Point(596, 164);
+            this.lbl1pl.Name = "lbl1pl";
+            this.lbl1pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl1pl.TabIndex = 11;
+            this.lbl1pl.Text = "label2";
+            // 
+            // lblPl
+            // 
+            this.lblPl.AutoSize = true;
+            this.lblPl.Location = new System.Drawing.Point(173, 164);
+            this.lblPl.Name = "lblPl";
+            this.lblPl.Size = new System.Drawing.Size(38, 15);
+            this.lblPl.TabIndex = 12;
+            this.lblPl.Text = "label3";
+            // 
+            // lbl2pl
+            // 
+            this.lbl2pl.AutoSize = true;
+            this.lbl2pl.Location = new System.Drawing.Point(173, 741);
+            this.lbl2pl.Name = "lbl2pl";
+            this.lbl2pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl2pl.TabIndex = 13;
+            this.lbl2pl.Text = "label4";
+            // 
+            // lbl3pl
+            // 
+            this.lbl3pl.AutoSize = true;
+            this.lbl3pl.Location = new System.Drawing.Point(641, 741);
+            this.lbl3pl.Name = "lbl3pl";
+            this.lbl3pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl3pl.TabIndex = 14;
+            this.lbl3pl.Text = "label5";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(829, 917);
+            this.ClientSize = new System.Drawing.Size(2048, 917);
+            this.Controls.Add(this.lbl3pl);
+            this.Controls.Add(this.lbl2pl);
+            this.Controls.Add(this.lblPl);
+            this.Controls.Add(this.lbl1pl);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnResult);
             this.Controls.Add(this.pActive);
             this.Controls.Add(this.pDeck);
             this.Controls.Add(this.pTable);
@@ -108,6 +175,7 @@ namespace CardWarGame
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pActive)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -120,6 +188,12 @@ namespace CardWarGame
         private System.Windows.Forms.Panel pTable;
         private System.Windows.Forms.Panel pDeck;
         private System.Windows.Forms.PictureBox pActive;
+        private System.Windows.Forms.Button btnResult;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lbl1pl;
+        private System.Windows.Forms.Label lblPl;
+        private System.Windows.Forms.Label lbl2pl;
+        private System.Windows.Forms.Label lbl3pl;
     }
 }
 

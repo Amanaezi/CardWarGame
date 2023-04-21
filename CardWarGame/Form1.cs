@@ -28,6 +28,10 @@ namespace CardWarGame
             {
                 players.Add(new Player($"Noname{i} "));
             }
+            lbl1pl.Text = players[1].Name;
+            lbl2pl.Text = players[2].Name;
+            lbl3pl.Text = players[3].Name;
+            lblPl.Text = players[0].Name;
             game = new GameLogic(players, showState, ShowInfo);
             store = new(game.Deck, this);
 
@@ -47,7 +51,7 @@ namespace CardWarGame
 
         private void ShowInfo(string message)
         {
-            MessageBox.Show(message);
+            label1.Text = message;
         }
 
         private void BindEvents()
@@ -107,6 +111,12 @@ namespace CardWarGame
             {
                 set.Draw(game.TableDeck == set.CardSet);
             }
+            btnResult.Enabled = game.MoveResultEnabled;
+        }
+
+        private void btnResult_Click(object sender, EventArgs e)
+        {
+            game.MoveResult();
         }
     }
 }
