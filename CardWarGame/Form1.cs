@@ -28,6 +28,7 @@ namespace CardWarGame
             {
                 players.Add(new Player($"Noname{i} "));
             }
+
             lbl1pl.Text = players[1].Name;
             lbl2pl.Text = players[2].Name;
             lbl3pl.Text = players[3].Name;
@@ -109,7 +110,10 @@ namespace CardWarGame
         {
             foreach (var set in sets)
             {
-                set.Draw(game.TableDeck == set.CardSet);
+                if (set.CardSet != game.TableDeck) 
+                    set.Draw(false);
+                else 
+                    set.Draw(c => !c.Closed);
             }
             btnResult.Enabled = game.MoveResultEnabled;
         }
