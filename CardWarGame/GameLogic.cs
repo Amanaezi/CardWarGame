@@ -133,6 +133,7 @@ namespace CardWarGame
             }
             
             ShowState();
+            ShowInfo("Click on button");
             MoveResultEnabled = !player.Last.Closed;
             
         }

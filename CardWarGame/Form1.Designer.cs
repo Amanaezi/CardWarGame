@@ -76,9 +76,9 @@ namespace CardWarGame
             // 
             // pTable
             // 
-            this.pTable.Location = new System.Drawing.Point(413, 192);
+            this.pTable.Location = new System.Drawing.Point(597, 192);
             this.pTable.Name = "pTable";
-            this.pTable.Size = new System.Drawing.Size(1623, 531);
+            this.pTable.Size = new System.Drawing.Size(1439, 531);
             this.pTable.TabIndex = 6;
             // 
             // pDeck
@@ -110,45 +110,50 @@ namespace CardWarGame
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 550);
+            this.label1.Font = new System.Drawing.Font("Calibri", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label1.Location = new System.Drawing.Point(12, 534);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 15);
+            this.label1.Size = new System.Drawing.Size(65, 26);
             this.label1.TabIndex = 10;
             this.label1.Text = "label1";
             // 
             // lbl1pl
             // 
             this.lbl1pl.AutoSize = true;
-            this.lbl1pl.Location = new System.Drawing.Point(596, 164);
+            this.lbl1pl.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbl1pl.Location = new System.Drawing.Point(597, 160);
             this.lbl1pl.Name = "lbl1pl";
-            this.lbl1pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl1pl.Size = new System.Drawing.Size(74, 29);
             this.lbl1pl.TabIndex = 11;
             this.lbl1pl.Text = "label2";
             // 
             // lblPl
             // 
             this.lblPl.AutoSize = true;
+            this.lblPl.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lblPl.Location = new System.Drawing.Point(173, 164);
             this.lblPl.Name = "lblPl";
-            this.lblPl.Size = new System.Drawing.Size(38, 15);
+            this.lblPl.Size = new System.Drawing.Size(74, 29);
             this.lblPl.TabIndex = 12;
             this.lblPl.Text = "label3";
             // 
             // lbl2pl
             // 
             this.lbl2pl.AutoSize = true;
-            this.lbl2pl.Location = new System.Drawing.Point(173, 741);
+            this.lbl2pl.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbl2pl.Location = new System.Drawing.Point(173, 727);
             this.lbl2pl.Name = "lbl2pl";
-            this.lbl2pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl2pl.Size = new System.Drawing.Size(74, 29);
             this.lbl2pl.TabIndex = 13;
             this.lbl2pl.Text = "label4";
             // 
             // lbl3pl
             // 
             this.lbl3pl.AutoSize = true;
-            this.lbl3pl.Location = new System.Drawing.Point(641, 741);
+            this.lbl3pl.Font = new System.Drawing.Font("Calibri", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lbl3pl.Location = new System.Drawing.Point(641, 727);
             this.lbl3pl.Name = "lbl3pl";
-            this.lbl3pl.Size = new System.Drawing.Size(38, 15);
+            this.lbl3pl.Size = new System.Drawing.Size(74, 29);
             this.lbl3pl.TabIndex = 14;
             this.lbl3pl.Text = "label5";
             // 
@@ -172,7 +177,7 @@ namespace CardWarGame
             this.Controls.Add(this.pPl2);
             this.Controls.Add(this.pPl1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Пьяница";
             ((System.ComponentModel.ISupportInitialize)(this.pActive)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
