@@ -14,11 +14,11 @@ namespace CardWarGame
 {
     public partial class Form1 : Form
     {
-        GameLogic game;
-        List<GraphicsCardSet> sets = new();
-        List<Player> players = new();
-        GraphicsStore store;
-        GraphicsCardSet table;
+        readonly GameLogic game;
+        readonly List<GraphicsCardSet> sets = new();
+        readonly List<Player> players = new();
+        readonly GraphicsStore store;
+        readonly GraphicsCardSet table;
         Card activeCard;
         public Form1()
         {
@@ -33,6 +33,7 @@ namespace CardWarGame
             lbl2pl.Text = players[2].Name;
             lbl3pl.Text = players[3].Name;
             lblPl.Text = players[0].Name;
+
             game = new GameLogic(players, showState, ShowInfo);
             store = new(game.Deck, this);
 

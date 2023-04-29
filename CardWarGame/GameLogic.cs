@@ -11,8 +11,7 @@ namespace CardWarGame
     class GameLogic
     {
         public List<Player> players = new();
-
-        public CardSet TableDeck = new CardSet();
+        public CardSet TableDeck = new();
 
         public GameLogic(List<Player> players, Action showState, Action<string> showInfo)
         {
@@ -27,12 +26,10 @@ namespace CardWarGame
         public Action ShowState { get; set; }
         public Action<string> ShowInfo { get; set; }
         public Player Human { get; set; }
-        public Player Winner { get; set; }
         public CardSet Deck { get; set; } = new CardSet();
         public bool MoveResultEnabled { get; private set; }
 
         private bool IsDispute = false;
-
         private int disputeCards = 0;
 
         public void Start()
@@ -44,7 +41,6 @@ namespace CardWarGame
                 players[i].Hand.Add(Deck.Deal(count / players.Count));
             }
             
-
             Human = players[0];
             ShowState();
             ShowInfo("put the card on the table");
@@ -81,44 +77,6 @@ namespace CardWarGame
             ShowState();
         }
 
-        //public void PickCard(int n)
-        //{
-        //    TableDeck.Add(Current.Hand.Pull(n));
-        //    NextPlayerMove();
-        //}
-
-        //private void NextPlayerMove();
-        //{
-        //    int newCurrPlayer = 0;
-        //    for (int i = 0; i < 3; i++)
-        //    {
-        //        if (Current == players[i])
-        //        {
-        //            newCurrPlayer = i + 1;
-        //        }
-        //        else
-        //        {
-        //            newCurrPlayer = 0;
-        //        }
-        //    }
-        //    Current = players[newCurrPlayer];
-        //    if(newCurrPlayer != 0 || newCurrPlayer != 3)
-        //    {
-        //        PickCard(random.Next(Current.Hand.Count));
-        //    }
-        //    else if(newCurrPlayer == 3)
-        //    {
-        //        PickCard(random.Next(Current.Hand.Count));
-        //        MoveResult(TableDeck);
-        //    }
-        //    else
-        //    {
-        //        return;
-        //    }
-
-
-        //}
-
         public void AfterTurn(Player player)
         {
             player.IsInRound = player.Hand.Count > 0;
@@ -137,7 +95,6 @@ namespace CardWarGame
             MoveResultEnabled = !player.Last.Closed;
             
         }
-
 
         public void MoveResult()
         {
@@ -164,14 +121,17 @@ namespace CardWarGame
             {
                 str += $"{PlayersWithMaxCard[i].Name}, ";
             }
+
             ShowInfo($"{str} in dispute");
             str = "";
+
             if (!PlayersWithMaxCard.Contains(Human))
             {
                 foreach (var player in PlayersWithMaxCard)
                 {
                     player.Hand.Shuffle();
                     PickCard(player.Hand.LastCard, player);
+
                     if(player.Hand.Count > 0)
                     {
                         PickCard(player.Hand.LastCard, player);
@@ -197,7 +157,9 @@ namespace CardWarGame
             {
                 player.IsInRound = player.Hand.Count > 0;
             }
+
             ShowInfo($"{roundWinner.Name} won the battle, put the card on the table");
+            
             if(players.Count(p => p.IsInRound) == 1 || !Human.IsInRound)
             {
                 ShowInfo(Human.IsInRound ? "Congratulations, you win!" : "You lose!");
@@ -207,7 +169,7 @@ namespace CardWarGame
         private List<Player> MaxPlayers()
         {
             Card MaxCard = null;
-            List<Player> maxPlayers = new List<Player>();
+            List<Player> maxPlayers = new();
 
             foreach (var player in players)
             {
